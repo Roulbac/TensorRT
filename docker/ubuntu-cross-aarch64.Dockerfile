@@ -81,7 +81,7 @@ RUN  dpkg -x /pdk_files/libcudnn[7-8]_*-1+cuda10.[0-9]_arm64.deb /pdk_files/cudn
     && dpkg -x /pdk_files/libcudnn[7-8]-dev_*-1+cuda10.[0-9]_arm64.deb /pdk_files/cudnn \
     && cd /pdk_files/cudnn/usr/include/aarch64-linux-gnu \
     && cd /pdk_files/cudnn/usr/lib/aarch64-linux-gnu \
-    && ln -s libcudnn.so.7 libcudnn.so \
+    && ln -s libcudnn.so.[7-9] libcudnn.so \
     && cd /pdk_files/cudnn \
     && ln -s usr/include/aarch64-linux-gnu include \
     && ln -s usr/lib/aarch64-linux-gnu lib \
