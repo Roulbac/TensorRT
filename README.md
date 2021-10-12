@@ -207,21 +207,9 @@ NOTE: Along with the TensorRT OSS components, the following source packages will
 	./docker/launch.sh --tag tensorrt-ubuntu --gpus all --release $TRT_RELEASE --source $TRT_SOURCE
 	```
 
-	**Example: Launch container for Jetson NX/AGX cross-compilation**
+	**Example: Launch container for Xavier(ARM64) cross-compilation**
 	```bash
-	./docker/launch.sh --tag tensorrt-ubuntu-jetpack --gpus all \
-		-DTRT_LIB_DIR=$TRT_RELEASE/lib \
-		-DTRT_OUT_DIR=`pwd`/out \
-		-DCMAKE_TOOLCHAIN_FILE=$TRT_SOURCE/cmake/toolchains/cmake_aarch64.toolchain \
-		-DCUDA_VERSION=10.2 \
-		-DBUILD_SAMPLES=OFF \
-		-DCUBLASLT_LIB=/usr/lib/aarch64-linux-gnu/libcublasLt.so \
-		-DCUBLAS_LIB=/usr/lib/aarch64-linux-gnu/libcublas.so \
-		-DCUDNN_LIB=/pdk_files/cudnn/lib/libcudnn.so \
-		-DGPU_ARCHS="72" \
-		-Dnvinfer_LIB_PATH=/pdk_files/tensorrt/lib/libnvinfer.so \
-		-Dnvparsers_LIB_PATH=/pdk_files/tensorrt/lib/libnvparsers.so \
-		-DCMAKE_CUDA_SEPARABLE_COMPILATION=OFF
+	./docker/launch.sh --tag tensorrt-ubuntu-jetpack --gpus all
 	```
 
 	> NOTE: To run TensorRT/CUDA programs in the build container, install [NVIDIA Docker support](#prerequisites). Docker versions < 19.03 require `nvidia-docker2` and `--runtime=nvidia` flag for docker run commands. On versions >= 19.03, you need the `nvidia-container-toolkit` package and `--gpus <NUM_GPUS>` flag.
@@ -247,6 +235,28 @@ NOTE: Along with the TensorRT OSS components, the following source packages will
     mkdir -p build && cd build
     cmake .. -DTRT_LIB_DIR=$TRT_RELEASE/lib -DTRT_OUT_DIR=`pwd`/out -DTRT_PLATFORM_ID=aarch64 -DCUDA_VERSION=10.2
     make -j$(nproc)
+    ```
+    
+    
+    **Example: Cross-compiled build for Jetson (ARM64) with cuda-10.2**
+
+    ```bash
+    cd $TRT_SOURCE
+    mkdir -p build && cd build
+    cmake .. -DTRT_LIB_DIR=$TRT_RELEASE/lib \
+	-DTRT_OUT_DIR=`pwd`/out \
+	-DCMAKE_TOOLCHAIN_FILE=$TRT_SOURCE/cmake/toolchains/cmake_aarch64.toolchain \
+	-DCUDA_VERSION=10.2 \
+	-DBUILD_SAMPLES=OFF \
+	-DCUBLASLT_LIB=/usr/lib/aarch64-linux-gnu/libcublasLt.so \
+	-DCUBLAS_LIB=/usr/lib/aarch64-linux-gnu/libcublas.so \
+	-DCUDNN_LIB=/pdk_files/cudnn/lib/libcudnn.so \
+	-DGPU_ARCHS="72" \
+	-Dnvinfer_LIB_PATH=/pdk_files/tensorrt/lib/libnvinfer.so \
+	-Dnvparsers_LIB_PATH=/pdk_files/tensorrt/lib/libnvparsers.so \
+	-DCMAKE_CUDA_SEPARABLE_COMPILATION=OFF \
+    sed -i 's/\-dlink//g' $TRT_SOURCE/build/plugin/CMakeFiles/nvinfer_plugin.dir/dlink.txt
+    make -j$(nproc) nvinfer_plugin
     ```
 
     **Example: Cross compile for QNX with cuda-10.2**
