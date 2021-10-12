@@ -201,8 +201,27 @@ NOTE: Along with the TensorRT OSS components, the following source packages will
 
 2. #### Launch the TensorRT build container.
 
+
+	**Example: Launch container for ubuntu 18.04**
 	```bash
 	./docker/launch.sh --tag tensorrt-ubuntu --gpus all --release $TRT_RELEASE --source $TRT_SOURCE
+	```
+
+	**Example: Launch container for Jetson NX/AGX cross-compilation**
+	```bash
+	./docker/launch.sh --tag tensorrt-ubuntu-jetpack --gpus all \
+		-DTRT_LIB_DIR=$TRT_RELEASE/lib \
+		-DTRT_OUT_DIR=`pwd`/out \
+		-DCMAKE_TOOLCHAIN_FILE=$TRT_SOURCE/cmake/toolchains/cmake_aarch64.toolchain \
+		-DCUDA_VERSION=10.2 \
+		-DBUILD_SAMPLES=OFF \
+		-DCUBLASLT_LIB=/usr/lib/aarch64-linux-gnu/libcublasLt.so \
+		-DCUBLAS_LIB=/usr/lib/aarch64-linux-gnu/libcublas.so \
+		-DCUDNN_LIB=/pdk_files/cudnn/lib/libcudnn.so \
+		-DGPU_ARCHS="72" \
+		-Dnvinfer_LIB_PATH=/pdk_files/tensorrt/lib/libnvinfer.so \
+		-Dnvparsers_LIB_PATH=/pdk_files/tensorrt/lib/libnvparsers.so \
+		-DCMAKE_CUDA_SEPARABLE_COMPILATION=OFF
 	```
 
 	> NOTE: To run TensorRT/CUDA programs in the build container, install [NVIDIA Docker support](#prerequisites). Docker versions < 19.03 require `nvidia-docker2` and `--runtime=nvidia` flag for docker run commands. On versions >= 19.03, you need the `nvidia-container-toolkit` package and `--gpus <NUM_GPUS>` flag.
