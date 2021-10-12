@@ -244,17 +244,17 @@ NOTE: Along with the TensorRT OSS components, the following source packages will
     cd $TRT_SOURCE
     mkdir -p build && cd build
     cmake .. -DTRT_LIB_DIR=$TRT_RELEASE/lib \
-	-DTRT_OUT_DIR=`pwd`/out \
-	-DCMAKE_TOOLCHAIN_FILE=$TRT_SOURCE/cmake/toolchains/cmake_aarch64.toolchain \
-	-DCUDA_VERSION=10.2 \
-	-DBUILD_SAMPLES=OFF \
-	-DCUBLASLT_LIB=/usr/lib/aarch64-linux-gnu/libcublasLt.so \
-	-DCUBLAS_LIB=/usr/lib/aarch64-linux-gnu/libcublas.so \
-	-DCUDNN_LIB=/pdk_files/cudnn/lib/libcudnn.so \
-	-DGPU_ARCHS="72" \
-	-Dnvinfer_LIB_PATH=/pdk_files/tensorrt/lib/libnvinfer.so \
-	-Dnvparsers_LIB_PATH=/pdk_files/tensorrt/lib/libnvparsers.so \
-	-DCMAKE_CUDA_SEPARABLE_COMPILATION=OFF \
+		-DTRT_OUT_DIR=`pwd`/out \
+		-DCMAKE_TOOLCHAIN_FILE=$TRT_SOURCE/cmake/toolchains/cmake_aarch64.toolchain \
+		-DCUDA_VERSION=10.2 \
+		-DBUILD_SAMPLES=OFF \
+		-DCUBLASLT_LIB=/usr/lib/aarch64-linux-gnu/libcublasLt.so \
+		-DCUBLAS_LIB=/usr/lib/aarch64-linux-gnu/libcublas.so \
+		-DCUDNN_LIB=/pdk_files/cudnn/lib/libcudnn.so \
+		-DGPU_ARCHS="72" \
+		-Dnvinfer_LIB_PATH=/pdk_files/tensorrt/lib/libnvinfer.so \
+		-Dnvparsers_LIB_PATH=/pdk_files/tensorrt/lib/libnvparsers.so \
+		-DCMAKE_CUDA_SEPARABLE_COMPILATION=OFF
     sed -i 's/\-dlink//g' $TRT_SOURCE/build/plugin/CMakeFiles/nvinfer_plugin.dir/dlink.txt
     make -j$(nproc) nvinfer_plugin
     ```
